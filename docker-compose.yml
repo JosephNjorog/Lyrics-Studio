@@ -1,0 +1,62 @@
+version: "3.9"
+
+# ─── Local development infrastructure ───────────────────────────────────────
+# Provides Redis (BullMQ) and the Python alignment microservice.
+# The Next.js app runs via `pnpm dev` outside Docker.
+#
+# Usage:
+#   docker compose up -d          # start background services
+#   docker compose logs -f        # follow logs
+#   docker compose down           # stop everything
+
+services:
+  # ── Redis ──────────────────────────────────────────────────────────────────
+  redis:
+    image: redis:7-alpine
+    container_name: lyric-sync-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --save 60 1 --loglevel warning
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  # ── Alignment microservice ─────────────────────────────────────────────────
+  alignment-service:
+    build:
+      context: ./apps/alignment-service
+      dockerfile: Dockerfile
+    container_name: lyric-sync-alignment
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - WHISPER_MODEL=${WHISPER_MODEL:-base}
+      - WHISPER_DEVICE=${WHISPER_DEVICE:-cpu}
+      - WHISPER_COMPUTE_TYPE=${WHISPER_COMPUTE_TYPE:-int8}
+      - CALLBACK_URL=${CALLBACK_URL:-http://host.docker.internal:3000/api/webhooks/alignment}
+      - CALLBACK_SECRET=${ALIGNMENT_WEBHOOK_SECRET:-}
+      - ALLOWED_ORIGINS=["http://localhost:3000","http://host.docker.internal:3000"]
+      - DEBUG=true
+    volumes:
+      # Cache downloaded Whisper model weights between restarts
+      - whisper_cache:/root/.cache/whisperx
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/v1/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s  # WhisperX model load can be slow on first start
+
+volumes:
+  redis_data:
+    driver: local
+  whisper_cache:
+    driver: local
