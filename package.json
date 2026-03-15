@@ -17,6 +17,11 @@
     "db:generate": "turbo run db:generate --filter=web",
     "db:migrate": "turbo run db:migrate --filter=web",
     "db:studio": "turbo run db:studio --filter=web",
+    "workers": "turbo run workers --filter=web",
+    "workers:dev": "turbo run workers:dev --filter=web",
+    "infra:up": "docker compose up -d",
+    "infra:down": "docker compose down",
+    "infra:logs": "docker compose logs -f",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\" --ignore-path .gitignore",
     "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md}\" --ignore-path .gitignore"
   },
