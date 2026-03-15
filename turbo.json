@@ -1,0 +1,43 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "ui": "tui",
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"],
+      "inputs": ["$TURBO_DEFAULT$", ".env.local"],
+      "outputs": [".next/**", "!.next/cache/**", "dist/**"]
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
+    "lint": {
+      "dependsOn": ["^build"],
+      "outputs": []
+    },
+    "type-check": {
+      "dependsOn": ["^build"],
+      "outputs": []
+    },
+    "test": {
+      "dependsOn": ["^build"],
+      "outputs": ["coverage/**"],
+      "env": ["DATABASE_URL", "NEXTAUTH_SECRET"]
+    },
+    "clean": {
+      "cache": false
+    },
+    "db:generate": {
+      "cache": false,
+      "outputs": ["src/lib/db/migrations/**"]
+    },
+    "db:migrate": {
+      "cache": false
+    },
+    "db:studio": {
+      "cache": false,
+      "persistent": true
+    }
+  },
+  "globalEnv": ["NODE_ENV", "VERCEL_ENV", "CI"]
+}
