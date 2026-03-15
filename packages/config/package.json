@@ -1,0 +1,23 @@
+{
+  "name": "@lyric-sync/config",
+  "version": "0.0.0",
+  "private": true,
+  "exports": {
+    "./eslint/base": "./src/eslint/base.js",
+    "./eslint/next": "./src/eslint/next.js",
+    "./tailwind/base": "./src/tailwind/base.ts"
+  },
+  "scripts": {
+    "lint": "echo 'no lint for config package'",
+    "type-check": "tsc --noEmit",
+    "clean": "echo 'nothing to clean'"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.2",
+    "eslint": "^9.17.0",
+    "eslint-config-next": "^14.2.18",
+    "tailwindcss": "^3.4.17",
+    "@typescript-eslint/eslint-plugin": "^8.18.2",
+    "@typescript-eslint/parser": "^8.18.2"
+  }
+}
