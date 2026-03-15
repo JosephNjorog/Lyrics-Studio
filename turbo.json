@@ -37,6 +37,14 @@
     "db:studio": {
       "cache": false,
       "persistent": true
+    },
+    "workers": {
+      "cache": false,
+      "persistent": true
+    },
+    "workers:dev": {
+      "cache": false,
+      "persistent": true
     }
   },
   "globalEnv": ["NODE_ENV", "VERCEL_ENV", "CI"]
