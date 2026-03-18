@@ -75,9 +75,30 @@ export async function fetchLyricsFromGenius(
     const target = match ?? hits[0];
     if (!target) return null;
 
-    // Genius doesn't provide raw lyrics via API — return song URL as placeholder
-    // In production, use a scraper or the lyrics-finder package
-    return `[Lyrics available at: ${target.result.url}]\n\nPaste lyrics manually or use a lyrics provider that supports direct text export.`;
+    // Scrape lyrics from the Genius song page
+    const pageResponse = await axios.get<string>(target.result.url, {
+      headers: {
+        "User-Agent":
+          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+      },
+      timeout: 15_000,
+    });
+
+    const $ = cheerio.load(pageResponse.data);
+
+    // Genius renders lyrics in data-lyrics-container divs
+    const lines: string[] = [];
+    $("[data-lyrics-container='true']").each((_, container) => {
+      // Replace <br> tags with newlines before extracting text
+      $(container)
+        .find("br")
+        .replaceWith("\n");
+      const text = $(container).text();
+      lines.push(text.trim());
+    });
+
+    const lyricsText = lines.join("\n").replace(/\n{3,}/g, "\n\n").trim();
+    return lyricsText || null;
   } catch {
     return null;
   }
