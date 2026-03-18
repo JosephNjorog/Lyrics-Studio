@@ -35,11 +35,31 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Lyrics not found for project" }, { status: 404 });
   }
 
-  const translated = await translateLyrics(
-    lyricRow.rawText,
-    parsed.data.sourceLanguage,
-    parsed.data.targetLanguage,
-  );
+  if (!process.env.OPENAI_API_KEY) {
+    return NextResponse.json(
+      { error: "Translation feature is not enabled (OPENAI_API_KEY not configured)" },
+      { status: 503 },
+    );
+  }
+
+  let translated: string | null;
+  try {
+    translated = await translateLyrics(
+      lyricRow.rawText,
+      parsed.data.sourceLanguage,
+      parsed.data.targetLanguage,
+    );
+  } catch (err) {
+    console.error("OpenAI translation error:", err);
+    return NextResponse.json(
+      { error: "Translation failed. Please try again." },
+      { status: 502 },
+    );
+  }
+
+  if (!translated) {
+    return NextResponse.json({ error: "Translation returned empty result" }, { status: 502 });
+  }
 
   const [updated] = await db
     .update(lyrics)
