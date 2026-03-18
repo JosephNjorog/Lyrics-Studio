@@ -1,12 +1,15 @@
 import OpenAI from "openai";
 
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
-
 export async function translateLyrics(
   lyrics: string,
   sourceLanguage: string,
   targetLanguage = "en",
-): Promise<string> {
+): Promise<string | null> {
+  const apiKey = process.env.OPENAI_API_KEY;
+  if (!apiKey) return null;
+
+  const openai = new OpenAI({ apiKey });
+
   const systemPrompt = `You are a professional lyricist and translator specializing in music translation.
 Your task is to translate song lyrics from ${sourceLanguage} to ${targetLanguage}.
 
@@ -31,7 +34,7 @@ Rules:
   });
 
   const result = completion.choices[0]?.message.content;
-  if (!result) throw new Error("OpenAI returned empty translation");
+  if (!result) return null;
 
   return result.trim();
 }
