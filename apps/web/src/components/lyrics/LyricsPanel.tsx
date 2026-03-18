@@ -98,10 +98,18 @@ export function LyricsPanel({ project, lyricData, onAlignmentDone }: LyricsPanel
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ projectId: project.id, sourceLanguage: language }),
       });
-      const data = (await res.json()) as { data?: { translatedText: string } };
-      if (data.data?.translatedText) {
+      const data = (await res.json()) as { data?: { translatedText: string }; error?: string };
+      if (res.status === 503) {
+        toast({
+          title: "Translation not available",
+          description: "OpenAI API key is not configured. You can still paste translated lyrics manually.",
+          variant: "destructive",
+        });
+      } else if (data.data?.translatedText) {
         setTranslated(data.data.translatedText);
         toast({ title: "Translation complete" });
+      } else if (data.error) {
+        toast({ title: "Translation failed", description: data.error, variant: "destructive" });
       }
     } catch {
       toast({ title: "Translation failed", variant: "destructive" });
