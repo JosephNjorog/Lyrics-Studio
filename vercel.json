@@ -1,0 +1,7 @@
+{
+  "buildCommand": "turbo run build --filter=web",
+  "installCommand": "pnpm install",
+  "outputDirectory": "apps/web/.next",
+  "framework": "nextjs",
+  "nodeVersion": "20.x"
+}
