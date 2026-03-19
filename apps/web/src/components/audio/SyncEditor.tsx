@@ -37,7 +37,6 @@ interface DragState {
 
 export function SyncEditor({ project, lyricData: _lyricData, syncData }: SyncEditorProps) {
   const waveContainerRef = useRef<HTMLDivElement>(null);
-  const _timelineRef = useRef<HTMLDivElement>(null);
   const dragRef = useRef<DragState | null>(null);
 
   const [saving, setSaving] = useState(false);
