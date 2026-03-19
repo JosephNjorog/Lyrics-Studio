@@ -7,14 +7,16 @@ const nextConfig = {
       { protocol: "https", hostname: "lh3.googleusercontent.com" },
     ],
   },
-  serverExternalPackages: [
-    "fluent-ffmpeg",
-    "music-metadata",
-    "@ffmpeg-installer/ffmpeg",
-    "canvas",
-    "bullmq",
-    "ioredis",
-  ],
+  experimental: {
+    serverComponentsExternalPackages: [
+      "fluent-ffmpeg",
+      "music-metadata",
+      "@ffmpeg-installer/ffmpeg",
+      "canvas",
+      "bullmq",
+      "ioredis",
+    ],
+  },
 };
 
 export default nextConfig;

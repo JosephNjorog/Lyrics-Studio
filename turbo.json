@@ -47,5 +47,5 @@
       "persistent": true
     }
   },
-  "globalEnv": ["NODE_ENV", "VERCEL_ENV", "CI"]
+  "globalEnv": ["NODE_ENV", "VERCEL_ENV", "CI", "TURBO_TELEMETRY_DISABLED", "DO_NOT_TRACK"]
 }

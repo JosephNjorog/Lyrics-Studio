@@ -4,8 +4,6 @@ import { authOptions } from "@/lib/auth/config";
 import { uploadToCloudinary } from "@/lib/cloudinary";
 import { extractAudioMetadata } from "@/lib/audio/metadata";
 
-export const config = { api: { bodyParser: false } };
-
 export async function POST(request: Request) {
   const session = await getServerSession(authOptions);
   if (!session?.user?.id) {
