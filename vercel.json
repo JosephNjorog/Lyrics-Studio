@@ -3,5 +3,9 @@
   "installCommand": "pnpm install",
   "outputDirectory": "apps/web/.next",
   "framework": "nextjs",
-  "nodeVersion": "20.x"
+  "nodeVersion": "20.x",
+  "env": {
+    "TURBO_TELEMETRY_DISABLED": "1",
+    "DO_NOT_TRACK": "1"
+  }
 }
