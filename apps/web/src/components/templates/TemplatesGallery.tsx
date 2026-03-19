@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useDropzone } from "react-dropzone";
-import { Plus, Trash2, Tag, Loader2, Image as ImageIcon } from "lucide-react";
+import { Plus, Trash2, Loader2, Image as ImageIcon } from "lucide-react";
 import type { Template } from "@/lib/db/schema";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";

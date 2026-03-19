@@ -35,9 +35,9 @@ interface DragState {
   duration: number;
 }
 
-export function SyncEditor({ project, lyricData, syncData }: SyncEditorProps) {
+export function SyncEditor({ project, lyricData: _lyricData, syncData }: SyncEditorProps) {
   const waveContainerRef = useRef<HTMLDivElement>(null);
-  const timelineRef = useRef<HTMLDivElement>(null);
+  const _timelineRef = useRef<HTMLDivElement>(null);
   const dragRef = useRef<DragState | null>(null);
 
   const [saving, setSaving] = useState(false);
@@ -52,8 +52,6 @@ export function SyncEditor({ project, lyricData, syncData }: SyncEditorProps) {
     updateWordTiming,
     selectedWordIndex,
     setSelectedWord,
-    setCurrentTime,
-    setIsPlaying,
   } = useEditorStore();
 
   const { ready, playPause, seekTo, duration } =
@@ -133,8 +131,7 @@ export function SyncEditor({ project, lyricData, syncData }: SyncEditorProps) {
   }
 
   // ─── Active word detection ──────────────────────────────────────────────────
-  const activeWordKey =
-    wordTimings.find((wt) => currentTime >= wt.startTime && currentTime <= wt.endTime) ?? null;
+  // (used via isActive checks inline per word pill)
 
   return (
     <TooltipProvider>

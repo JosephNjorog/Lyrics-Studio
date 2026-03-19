@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Search, Wand2, Languages, Save, Loader2, CheckCircle2, AlertCircle } from "lucide-react";
 import type { Project, Lyric } from "@/lib/db/schema";
