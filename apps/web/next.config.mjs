@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  transpilePackages: ["@lyric-sync/types", "@lyric-sync/config"],
+  transpilePackages: ["@lyric-sync/config"],
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "res.cloudinary.com" },
