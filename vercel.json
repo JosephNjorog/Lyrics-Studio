@@ -2,7 +2,6 @@
   "buildCommand": "turbo run build --filter=web",
   "installCommand": "pnpm install",
   "outputDirectory": "apps/web/.next",
-  "framework": "nextjs",
   "env": {
     "TURBO_TELEMETRY_DISABLED": "1",
     "DO_NOT_TRACK": "1"
