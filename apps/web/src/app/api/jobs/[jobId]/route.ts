@@ -13,8 +13,9 @@ export async function GET(
   }
 
   // Check both queues
-  let job = await alignmentQueue.getJob(params.jobId);
-  if (!job) job = await renderQueue.getJob(params.jobId);
+  const job =
+    (await alignmentQueue.getJob(params.jobId)) ??
+    (await renderQueue.getJob(params.jobId));
 
   if (!job) {
     return NextResponse.json({ error: "Job not found" }, { status: 404 });
