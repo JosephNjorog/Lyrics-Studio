@@ -6,7 +6,7 @@ const connection = new IORedis(process.env.REDIS_URL ?? "redis://localhost:6379"
   maxRetriesPerRequest: null,
 });
 
-export const alignmentQueue = new Queue<AlignmentQueueJob>("alignment", {
+export const alignmentQueue = new Queue<AlignmentQueueJob, void, string>("alignment", {
   connection,
   defaultJobOptions: {
     attempts: 3,
@@ -16,7 +16,7 @@ export const alignmentQueue = new Queue<AlignmentQueueJob>("alignment", {
   },
 });
 
-export const renderQueue = new Queue<RenderQueueJob>("render", {
+export const renderQueue = new Queue<RenderQueueJob, void, string>("render", {
   connection,
   defaultJobOptions: {
     attempts: 2,
