@@ -5,7 +5,7 @@ import { db } from "@/lib/db";
 import { projects, lyrics } from "@/lib/db/schema";
 import { eq, and } from "drizzle-orm";
 import { z } from "zod";
-import { alignmentQueue } from "@/lib/queue";
+import { addAlignmentJob } from "@/lib/queue";
 
 const schema = z.object({
   projectId: z.string().uuid(),
@@ -53,7 +53,7 @@ export async function POST(request: Request) {
   }
 
   // Enqueue alignment job
-  const job = await alignmentQueue.add("align", {
+  const job = await addAlignmentJob({
     projectId: project.id,
     audioUrl: project.audioUrl,
     lyrics: lyricRow.rawText,

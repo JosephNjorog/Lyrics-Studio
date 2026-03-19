@@ -26,4 +26,11 @@ export const renderQueue = new Queue<RenderQueueJob, void, string>("render", {
   },
 });
 
+/** Typed wrappers — avoids BullMQ v5 ExtractNameType inference issues */
+export const addAlignmentJob = (data: AlignmentQueueJob) =>
+  alignmentQueue.add("align" as string, data);
+
+export const addRenderJob = (data: RenderQueueJob) =>
+  renderQueue.add("render" as string, data);
+
 export { connection as redisConnection };

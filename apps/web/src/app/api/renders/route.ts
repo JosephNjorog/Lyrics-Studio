@@ -5,7 +5,7 @@ import { db } from "@/lib/db";
 import { projects, templates, syncData, renders } from "@/lib/db/schema";
 import { eq, and } from "drizzle-orm";
 import { z } from "zod";
-import { renderQueue } from "@/lib/queue";
+import { addRenderJob } from "@/lib/queue";
 import { DEFAULT_TEXT_STYLE } from "@lyric-sync/types";
 
 const schema = z.object({
@@ -89,7 +89,7 @@ export async function POST(request: Request) {
   const textStyle = { ...DEFAULT_TEXT_STYLE, ...(parsed.data.textStyleOverrides ?? {}) };
 
   // Enqueue render job
-  await renderQueue.add("render", {
+  await addRenderJob({
     projectId: project.id,
     renderId: render!.id,
     templateId: template.id,
